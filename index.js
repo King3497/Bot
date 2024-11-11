@@ -5,10 +5,10 @@ const socketIo = require('socket.io');
 
 // Configurações do bot
 const bot = mineflayer.createBot({
-  host: '162.55.199.41', // IP do servidor Minecraft
-  port: 34274,                  // Porta do servidor
+  host: 'streetvision.uk.to', // IP do servidor Minecraft
+  port: 30578,                  // Porta do servidor
   username: 'TV',        // Nome do bot
-  version: '1.20',             // Versão do Minecraft (exemplo)
+  version: '1.21.31',             // Versão do Minecraft (exemplo)
 });
 
 // Configurações do servidor web
