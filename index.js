@@ -1,14 +1,29 @@
-const bedrock = require('bedrock-protocol')
-const server = bedrock.createServer({
-  host: '162.55.199.41',       // optional. host to bind as.
-  port: 30578,          // optional
-  username: 'Entidade 303',
-  version: '1.21.42',   // optional. The server version, latest if not specified. 
-})
+const mc = require('minecraft-protocol');
 
-server.on('connect', client => {
-  client.on('join', () => { // The client has joined the server.
-    const d = new Date()  // Once client is in the server, send a colorful kick message
-    client.disconnect(`Good ${d.getHours() < 12 ? '§emorning§r' : '§3afternoon§r'} :)\n\nMy time is ${d.toLocaleString()} !`)
-  })
-})
+const bot = mc.createClient({
+  host: '162.55.199.41', // Endereço do servidor
+  port: 30578,                  // Porta do servidor Java (padrão é 25565)
+  username: 'Entidade 303'         // Nome de usuário do bot
+});
+
+bot.on('login', () => {
+  console.log('Bot conectado ao servidor!');
+});
+
+bot.on('chat', (packet) => {
+  const message = JSON.parse(packet.message);
+  console.log(`Chat: ${message.extra ? message.extra[0].text : message.text}`);
+  
+  // Responde "Pong!" ao comando "!ping" no chat
+  if (message.extra && message.extra[0].text === '!ping') {
+    bot.write('chat', { message: 'Pong!' });
+  }
+});
+
+bot.on('end', () => {
+  console.log('Bot desconectado do servidor');
+});
+
+bot.on('error', (err) => {
+  console.error('Erro no bot:', err);
+});
