@@ -1,7 +1,7 @@
 const mc = require('minecraft-protocol');
 
 const bot = mc.createClient({
-  host: '162.55.199.41', // Endereço do servidor
+  host: 'azurite.magmanode.com', // Endereço do servidor
   port: 30578,                  // Porta do servidor Java (padrão é 25565)
   username: 'Entidade 303'         // Nome de usuário do bot
 });
