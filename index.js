@@ -3,7 +3,7 @@ const server = bedrock.createServer({
   host: '162.55.199.41',       // optional. host to bind as.
   port: 30578,          // optional
   username: 'Entidade 303',
-  version: '1.21.31',   // optional. The server version, latest if not specified. 
+  version: '1.21.42',   // optional. The server version, latest if not specified. 
 })
 
 server.on('connect', client => {
