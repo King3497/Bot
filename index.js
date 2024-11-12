@@ -1,34 +1,16 @@
 const bedrock = require('bedrock-protocol')
+const client = bedrock.createClient({
+  host: 'azurite.magmanode.com',   // optional
+  port: 30578,         // optional, default 19132
+  username: 'Entidade 303',   // the username you want to join as, optional if online mode
+  offline: true       // optional, default false. if true, do not login with Xbox Live. You will not be asked to sign-in if set to true.
+})
 
-const bot = bedrock.createClient({
-  host: 'azurite.magmanode.com',  // Endereço IP do servidor
-  port: 30578,                   // Porta padrão do Minecraft Bedrock
-  username: 'Entidade 303'          // Nome de usuário do bot
-});
-
-bot.on('join', () => {
-  console.log('Bot entrou no servidor!');
-});
-
-bot.on('text', (packet) => {
-  // Recebe mensagens de chat
-  console.log(`Chat: ${packet.source_name}: ${packet.message}`);
-  if (packet.message === '!ping') {
-    bot.write('text', {
-      type: 'chat',
-      needs_translation: false,
-      source_name: bot.options.username,
-      xuid: '',
-      platform_chat_id: '',
-      message: 'Pong!'
-    });
+client.on('text', (packet) => { // Listen for chat messages from the server and echo them back.
+  if (packet.source_name != client.username) {
+    client.queue('text', {
+      type: 'chat', needs_translation: false, source_name: client.username, xuid: '', platform_chat_id: '', filtered_message: '',
+      message: `${packet.source_name} said: ${packet.message} on ${new Date().toLocaleString()}`
+    })
   }
-});
-
-bot.on('end', () => {
-  console.log('Bot desconectado do servidor');
-});
-
-bot.on('error', (err) => {
-  console.error('Erro no bot:', err);
-});
+})
