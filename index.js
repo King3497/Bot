@@ -1,4 +1,4 @@
-const bedrock = require('prismarine-bedrock-protocol');
+const bedrock = require('bedrock-protocol')
 
 const bot = bedrock.createClient({
   host: 'azurite.magmanode.com',  // Endereço IP do servidor
