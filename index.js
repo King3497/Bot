@@ -1,45 +1,34 @@
-const mineflayer = require('mineflayer');
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
+const bedrock = require('prismarine-bedrock-protocol');
 
-// Configurações do bot
-const bot = mineflayer.createBot({
-  host: 'azurite.magmanode.com', // IP do servidor Minecraft
-  port: 34274,                  // Porta do servidor
-  username: 'GOD',        // Nome do bot
-  version: '1.20',             // Versão do Minecraft (exemplo)
+const bot = bedrock.createClient({
+  host: 'azurite.magmanode.com',  // Endereço IP do servidor
+  port: 30578,                   // Porta padrão do Minecraft Bedrock
+  username: 'Entidade 303'          // Nome de usuário do bot
 });
 
-// Configurações do servidor web
-const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
-
-// Configuração da pasta de arquivos estáticos (frontend)
-app.use(express.static('public'));
-
-// Evento para quando o bot estiver conectado
-bot.on('login', () => {
-  console.log('Bot conectado ao servidor Minecraft!');
+bot.on('join', () => {
+  console.log('Bot entrou no servidor!');
 });
 
-// Conexão entre o bot e a interface web
-io.on('connection', (socket) => {
-  console.log('Cliente conectado à interface web!');
-
-  // Envia uma mensagem do bot para o jogo
-  socket.on('sendMessage', (msg) => {
-    bot.chat(msg);
-  });
-
-  // Envia a posição do bot para o cliente
-  setInterval(() => {
-    socket.emit('botPosition', bot.entity.position);
-  }, 1000);
+bot.on('text', (packet) => {
+  // Recebe mensagens de chat
+  console.log(`Chat: ${packet.source_name}: ${packet.message}`);
+  if (packet.message === '!ping') {
+    bot.write('text', {
+      type: 'chat',
+      needs_translation: false,
+      source_name: bot.options.username,
+      xuid: '',
+      platform_chat_id: '',
+      message: 'Pong!'
+    });
+  }
 });
 
-// Inicializa o servidor web na porta 3000
-server.listen(3000, () => {
-  console.log('Servidor web iniciado na porta 3000');
+bot.on('end', () => {
+  console.log('Bot desconectado do servidor');
+});
+
+bot.on('error', (err) => {
+  console.error('Erro no bot:', err);
 });
