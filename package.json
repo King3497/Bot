@@ -7,7 +7,7 @@
       "start": "node index.js"
     },
     "dependencies": {
-      "bedrock-protocol": "3.41.0"
+      "minecraft-protocol": "^1.35.1"
     },
     "author": "King",
     "license": "MIT"
